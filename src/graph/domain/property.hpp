@@ -1,0 +1,31 @@
+#pragma once
+#include <variant>
+#include <unordered_map>
+#include <string>
+#include <memory>
+#include <iostream>
+
+using namespace std;
+namespace graphdb
+{
+    struct PropertyValue;
+
+    using PropertyMap = unordered_map<string, PropertyValue>;
+
+    struct PropertyValue {
+        using variant_type = variant<int, double, string, bool, shared_ptr<PropertyMap>>;
+        variant_type value;
+
+        //default
+        PropertyValue() : value(0) {}
+
+        PropertyValue(const PropertyMap& map) : value(make_shared<PropertyMap>(map)) {}
+        PropertyValue(int v) : value(v) {}
+        PropertyValue(double v) : value(v) {}
+        PropertyValue(const string& v) : value(v) {}
+        PropertyValue(bool v) : value(v) {}
+
+        void serialize(ofstream& out) const;
+        static PropertyValue deserialize(ifstream& in);
+    };
+}
