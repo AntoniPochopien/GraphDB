@@ -25,7 +25,9 @@ namespace graphdb
         PropertyValue(const string& v) : value(v) {}
         PropertyValue(bool v) : value(v) {}
 
-        void serialize(ofstream& out) const;
+        size_t estimateSize() const;
+
+        void serialize(ostream& out) const;
         static PropertyValue deserialize(ifstream& in);
     };
 }

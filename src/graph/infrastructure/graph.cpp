@@ -94,12 +94,23 @@ vector<Edge> Graph::getNeighbors(const string &nodeId) const
     return {};
 }
 
-
 vector<Node> Graph::getAllNodes() const
 {
-    std::vector<Node> result;
-    for (const auto& [id, node] : nodes)
+    vector<Node> result;
+    for (const auto &[id, node] : nodes)
         result.push_back(node);
     return result;
 }
 
+vector<Edge> Graph::getAllEdges() const
+{
+    vector<Edge> allEdges;
+
+    for (const auto &pair : adjacencyList)
+    {
+        const auto &edges = pair.second;
+        allEdges.insert(allEdges.end(), edges.begin(), edges.end());
+    }
+
+    return allEdges;
+}

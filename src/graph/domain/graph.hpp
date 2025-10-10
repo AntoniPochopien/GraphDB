@@ -30,5 +30,6 @@ namespace graphdb
         vector<Edge> getNeighbors(const std::string &nodeId) const;
 
         vector<Node> getAllNodes() const;
+        vector<Edge> getAllEdges() const;
     };
 }
