@@ -23,6 +23,7 @@ Storage::Storage(const string &box) : boxName(box), lastNodeChunkIdx(0), lastEdg
 
     auto initFolder = [](const string &folderPath, const string &prefix, int &lastIdx)
     {
+        lastIdx = -1;
         for (const auto &entry : fs::directory_iterator(folderPath))
         {
             auto name = entry.path().filename().string();
@@ -31,15 +32,14 @@ Storage::Storage(const string &box) : boxName(box), lastNodeChunkIdx(0), lastEdg
                 try
                 {
                     size_t idx = stoi(name.substr(prefix.size() + 1, name.size() - prefix.size() - 5));
-                    if (idx >= static_cast<size_t>(lastIdx))
-                        lastIdx = static_cast<int>(idx + 1);
+                    if (idx > static_cast<size_t>(lastIdx))
+                        lastIdx = static_cast<int>(idx);
                 }
-                catch (...)
-                {
-                    cerr << "Warning: bad filename format in " << entry.path() << "\n";
-                }
+                catch (...) { cerr << "Warning: bad filename format in " << entry.path() << "\n"; }
             }
         }
+
+        if (lastIdx < 0) lastIdx = 0;
     };
 
     initFolder(NODES_BASE_PATH, "nodes", lastNodeChunkIdx);
