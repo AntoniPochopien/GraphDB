@@ -12,8 +12,11 @@ namespace graphdb
         string from;
         string to;
         double weight;
-        PropertyMap poperties;
+        PropertyMap properties;
 
         void print() const;
+
+        void serialize(ostream& out) const;
+        static Edge deserialize(istream& in);
     };
 }

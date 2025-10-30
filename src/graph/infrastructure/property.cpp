@@ -57,7 +57,7 @@ namespace graphdb
             } }, value);
     }
 
-    PropertyValue PropertyValue::deserialize(ifstream &in)
+    PropertyValue PropertyValue::deserialize(istream &in)
     {
         char type;
         in.read(&type, 1);

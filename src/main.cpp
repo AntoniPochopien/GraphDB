@@ -31,7 +31,6 @@ int main()
     storage.buildNodeIndex();
     storage.buildEdgeIndex();
 
-    // --- Odczyt testowy ---
     try
     {
         Node loaded = storage.loadNodeById("Alice");

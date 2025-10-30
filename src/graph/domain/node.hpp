@@ -14,5 +14,7 @@ namespace graphdb
         PropertyMap properties;
 
         void print() const;
+        void serialize(ostream& out) const;
+        static Node deserialize(istream& in);
     };
 }

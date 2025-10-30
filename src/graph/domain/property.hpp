@@ -28,6 +28,6 @@ namespace graphdb
         size_t estimateSize() const;
 
         void serialize(ostream& out) const;
-        static PropertyValue deserialize(ifstream& in);
+        static PropertyValue deserialize(istream& in);
     };
 }

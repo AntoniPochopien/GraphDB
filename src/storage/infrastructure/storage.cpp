@@ -171,9 +171,9 @@ void Storage::saveEdgeChunk(const vector<Edge> &edges)
         out.write(reinterpret_cast<const char *>(&e.weight), sizeof(e.weight));
 
         // properties
-        size_t propCount = e.poperties.size();
+        size_t propCount = e.properties.size();
         out.write(reinterpret_cast<const char *>(&propCount), sizeof(propCount));
-        for (const auto &[k, v] : e.poperties)
+        for (const auto &[k, v] : e.properties)
         {
             size_t klen = k.size();
             out.write(reinterpret_cast<const char *>(&klen), sizeof(klen));
@@ -292,7 +292,7 @@ vector<Edge> Storage::loadEdgesFromNode(const string &nodeId)
             in.read(&key[0], klen);
 
             PropertyValue val = PropertyValue::deserialize(in);
-            e.poperties[key] = val;
+            e.properties[key] = val;
         }
 
         edges.push_back(e);
