@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <iostream>
+#include "json.hpp"
 
 using namespace std;
 namespace graphdb
@@ -29,5 +30,8 @@ namespace graphdb
 
         void serialize(ostream& out) const;
         static PropertyValue deserialize(istream& in);
+
+        nlohmann::json to_json() const;
+        static PropertyValue from_json(const nlohmann::json& j);
     };
 }

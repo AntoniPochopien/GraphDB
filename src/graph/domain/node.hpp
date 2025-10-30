@@ -16,5 +16,8 @@ namespace graphdb
         void print() const;
         void serialize(ostream& out) const;
         static Node deserialize(istream& in);
+
+        string to_json() const;
+        static Node from_json(const string& jsonStr);
     };
 }

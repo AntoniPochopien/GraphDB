@@ -1,13 +1,35 @@
 #include "node.hpp"
 #include <iostream>
+#include "json.hpp"
 
 using namespace std;
 using namespace graphdb;
+using json = nlohmann::json;
 
 void Node::print() const {
     cout << "Node id: " << id << "\n";
     for (const auto& [k, v] : properties)
         cout << "  " << k << ": (property)\n";
+}
+
+
+string Node::to_json() const {
+    json j;
+    j["id"] = id;
+    for (const auto& [key, val] : properties) {
+        j["properties"][key] = val.to_json();
+    }
+    return j.dump();
+}
+
+Node Node::from_json(const string& jsonStr) {
+    json j = json::parse(jsonStr);
+    Node node;
+    node.id = j["id"].get<string>();
+    for (auto& [key, value] : j["properties"].items()) {
+        node.properties[key] = PropertyValue::from_json(value);
+    }
+    return node;
 }
 
 void Node::serialize(ostream& out) const {
@@ -44,7 +66,7 @@ Node Node::deserialize(istream& in) {
         in.read(key.data(), klen);
 
         PropertyValue val = PropertyValue::deserialize(in);
-        node.properties.emplace(std::move(key), std::move(val));
+        node.properties.emplace(move(key), move(val));
     }
 
     return node;

@@ -16,6 +16,7 @@
                 "${workspaceFolder}\\src\\main.cpp",
                 "-I${workspaceFolder}\\src\\graph\\domain",
                 "-I${workspaceFolder}\\src\\storage\\domain",
+                "-I${workspaceFolder}\\src\\3rdparty",
                 "-o",
                 "${workspaceFolder}/build/graphdb.exe"
             ],

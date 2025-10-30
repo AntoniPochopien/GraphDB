@@ -4,6 +4,7 @@
 
 
 using namespace std;
+using json = nlohmann::json;
 
 namespace graphdb
 {
@@ -26,6 +27,35 @@ namespace graphdb
         } else {
             return 0;
         } }, value);
+    }
+
+    json PropertyValue::to_json() const {
+        json j;
+        if (holds_alternative<int>(value)) j = get<int>(value);
+        else if (holds_alternative<double>(value)) j = get<double>(value);
+        else if (holds_alternative<string>(value)) j = get<string>(value);
+        else if (holds_alternative<bool>(value)) j = get<bool>(value);
+        else if (holds_alternative<shared_ptr<PropertyMap>>(value)) {
+            j = json::object();
+            auto mapPtr = get<shared_ptr<PropertyMap>>(value);
+            for (auto& [k,v] : *mapPtr)
+                j[k] = v.to_json();
+        }
+        return j;
+    }
+
+    PropertyValue PropertyValue::from_json(const json& j) {
+        if (j.is_number_integer()) return PropertyValue(j.get<int>());
+        if (j.is_number_float())   return PropertyValue(j.get<double>());
+        if (j.is_string())         return PropertyValue(j.get<string>());
+        if (j.is_boolean())        return PropertyValue(j.get<bool>());
+        if (j.is_object()) {
+            PropertyMap map;
+            for (auto& [k,v] : j.items())
+                map[k] = PropertyValue::from_json(v);
+            return PropertyValue(map);
+        }
+        throw runtime_error("Unsupported JSON type for PropertyValue");
     }
 
     void PropertyValue::serialize(ostream &out) const

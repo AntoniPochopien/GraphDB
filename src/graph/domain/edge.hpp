@@ -16,7 +16,10 @@ namespace graphdb
 
         void print() const;
 
-        void serialize(ostream& out) const;
-        static Edge deserialize(istream& in);
+        void serialize(ostream &out) const;
+        static Edge deserialize(istream &in);
+
+        string to_json() const;
+        static Edge from_json(const string &jsonStr);
     };
 }
